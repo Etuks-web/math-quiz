@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Math 101 Results</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    .correct { background-color: #c8e6c9; } /* green */
+    .wrong { background-color: #ffcdd2; }   /* red */
+    #score { font-size: 20px; font-weight: bold; margin-top: 20px; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Math 101 - Results</h1>
+  <div id="score"></div>
+  <table>
+    <thead>
+      <tr>
+        <th>Question</th>
+        <th>Selected Answer</th>
+        <th>Correct Answer</th>
+      </tr>
+    </thead>
+    <tbody id="resultsTable"></tbody>
+  </table>
+
+  <script>
+    const studentAnswers = JSON.parse(localStorage.getItem("quizAnswers"));
+    const correctAnswers = JSON.parse(localStorage.getItem("correctAnswers"));
+
+    const resultsTable = document.getElementById("resultsTable");
+    let score = 0;
+
+    for (let i = 1; i <= 10; i++) {
+      let row = document.createElement("tr");
+
+      let qCell = document.createElement("td");
+      qCell.textContent = i;
+      row.appendChild(qCell);
+
+      let selected = studentAnswers[`q${i}`];
+      let correct = correctAnswers[`q${i}`];
+
+      let sCell = document.createElement("td");
+      sCell.textContent = selected ? selected : "No Answer";
+
+      let cCell = document.createElement("td");
+      cCell.textContent = correct;
+
+      if (selected === correct) {
+        row.classList.add("correct");
+        score++;
+      } else {
+        row.classList.add("wrong");
+      }
+
+      row.appendChild(sCell);
+      row.appendChild(cCell);
+      resultsTable.appendChild(row);
+    }
+
+    document.getElementById("score").textContent = `Final Score: ${score} / 10`;
+  </script>
+</body>
+</html>
